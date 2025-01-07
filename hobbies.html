@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stefan Stojanovski - Hobbies</title>
+    <script type="module" src="https://unpkg.com/@splinetool/viewer@1.9.53/build/spline-viewer.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <style>
+        /* Same CSS from previous file (or add any additional styles for hobbies) */
+        spline-viewer {
+            width: 100vw;
+            height: 100vh;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 0; /* Ensure the Spline viewer stays behind everything */
+        }
+
+        /* Navigation Styling */
+        nav {
+            width: 100%;
+            background-color: rgba(227, 227, 227, 0.8);
+            position: absolute;
+            top: 20px;
+            left: 0;
+            z-index: 2;
+            display: flex;
+            justify-content: end;
+        }
+
+        nav a {
+            color: #182848;
+            margin: 0 15px;
+            padding: 10px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 16px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            transition: background 0.2s ease, color 0.2s ease;
+        }
+        nav a:hover {
+            border-radius: 5px;
+            color: #4f9deb; /* Accent color for better visibility */
+            font-weight: bold; /* Make the text bold */
+        }
+
+        /* Hobbies Section Styling */
+        .hobbies {
+            position: absolute;
+            top: 30px;
+            left: 50px;
+            z-index: 2;
+            color: #182848;
+            text-align: left;
+            width: 500px;
+            padding-right: 30px;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+        }
+
+        .hobbies.visible {
+            opacity: 1;
+        }
+
+        .hobbies h2 {
+            font-size: 32px;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .hobbies p {
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+
+        .hobbies-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+        }
+
+        .hobby-item {
+            background: linear-gradient(145deg, #e3e3e3, #f1f1f1);
+            padding: 20px;
+            width: 100px;
+            border-radius: 10px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            text-align: center;
+        }
+
+        .hobby-item:hover {
+            transform: scale(1.05);
+        }
+
+        .hobby-item i {
+            font-size: 30px;
+            margin-bottom: 10px;
+            color: #182848;
+        }
+
+        .preview-text {
+            position: absolute;
+            bottom: -25px;
+            left: 0;
+            width: 100%;
+            font-size: 14px;
+            color: #555;
+            transition: opacity 0.3s ease, bottom 0.3s ease;
+            opacity: 0;
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        .hobby-item:hover .preview-text {
+            opacity: 1;
+            bottom: 5px;
+            background-color: #4f9deb;
+            color: white;
+        }
+        .hobby-item:focus .preview-text {
+            opacity: 1;
+            bottom: 5px;
+            outline: none; /* Optional: Remove focus outline for better visuals */
+        }
+        /* Footer Box */
+        #box {
+            width: 100vw;
+            height: 60px;
+            background-color: #e3e3e3;
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            z-index: 2;
+        }
+        /* Mobile View */
+        @media (max-width: 768px) {
+
+            .hobbies {
+                width: 80%;
+                padding: 0;
+                right: 50px;
+                text-align: center;
+                z-index: 1;
+            }
+
+            .hobbies h2 {
+                margin-left: auto;
+                font-size: 18px;
+            }
+
+            .hobbies p {
+                display: none;
+            }
+
+            .hobby-item {
+                width: 35%;
+                margin: -5px -10px;
+                border-radius: 5px;
+                text-align: center;
+                z-index: 1;
+            }
+
+
+            .hamburger {
+                position: absolute;
+                top: 10px;
+                right: 30px; /* Pomeri hamburger meni desno */
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+                width: 30px;
+                height: 25px;
+                cursor: pointer;
+                z-index: 15;
+            }
+            .hamburger div {
+                background-color: #182848;
+                height: 4px;
+                width: 100%;
+                border-radius: 5px;
+                transition: all 0.3s ease-in-out;
+            }
+
+            nav {
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0; /* Postavi meni da pokrije celu širinu */
+                z-index: 10;
+                padding: 10px;
+                background-color: transparent; /* Bez pozadine */
+                flex-direction: column;
+                justify-content: flex-start;
+                align-items: flex-start;
+                height: 100%;
+                display: none;
+                transition: transform 0.5s ease, opacity 0.5s ease;
+                transform: translateX(-100%); /* Skriveno sa leve strane */
+            }
+
+            nav.visible {
+                display: flex;
+                transform: translateX(0);
+                opacity: 1;
+            }
+
+            .nav-links {
+                display: none;
+                flex-direction: column;
+                width: 70%;
+                margin-top: 50px;
+                z-index: 10;
+            }
+
+            .nav-links.active {
+                display: flex;
+            }
+
+            .nav-links a {
+                padding: 10px;
+                font-size: 18px;
+                text-align: left;
+                width: 100%;
+                color: #182848;
+                background-color: #e3e3e3;
+                text-decoration: none;
+                border-top: 1px solid #182848;
+                transition: background-color 0.3s ease, color 0.3s ease;
+            }
+
+            .hobbies-section {
+                width: 90%;
+                left: 5%;
+                top: 100px; /* Adjusts the section placement */
+                text-align: center;
+            }
+
+
+
+            .hobbies-section p {
+                font-size: 12px;
+            }
+
+            /* Footer Box */
+            #footer-box {
+                width: 100%;
+                height: 60px;
+                text-align: center;
+                padding-top: 10px;
+            }
+
+
+        }
+    </style>
+</head>
+<body>
+
+<spline-viewer url="https://prod.spline.design/gG3ZQW6OD3eovUKr/scene.splinecode"></spline-viewer>
+
+<!-- Navigation Bar -->
+<nav>
+    <div class="hamburger" onclick="toggleMenu()">
+        <div></div>
+        <div></div>
+        <div></div>
+    </div>
+    <div class="nav-links">
+    <a href="index.html">Home</a>
+    <a href="skills.html">Skills</a>
+    <a href="hobbies.html">Hobbies</a>
+    <a href="projects.html">Projects</a>
+    <a href="conctact.html">Contact</a>
+        </div>
+</nav>
+
+<!-- Hobbies Section -->
+<div class="hobbies">
+    <h2>My Hobbies</h2>
+    <p>Things I enjoy doing:</p>
+    <div class="hobbies-list">
+        <div class="hobby-item">
+            <i class="fas fa-fist-raised"></i>
+            <h3>Karate</h3>
+            <p class="preview-text">National and Balkan champion, certified Coach and Referee.</p>
+        </div>
+        <div class="hobby-item">
+            <i class="fas fa-plane"></i>
+            <h3>Traveling</h3>
+            <p class="preview-text">Exploring new places and experiencing different cultures.</p>
+        </div>
+        <div class="hobby-item">
+            <i class="fas fa-code"></i>
+            <h3>Coding</h3>
+            <p class="preview-text">Building software and solving problems through programming.</p>
+        </div>
+        <div class="hobby-item">
+            <i class="fas fa-bicycle"></i>
+            <h3>Cycling</h3>
+            <p class="preview-text">Enjoying the outdoors and staying active with long rides.</p>
+        </div>
+        <div class="hobby-item">
+            <i class="fas fa-camera"></i>
+            <h3>Photography</h3>
+            <p class="preview-text">Capturing moments and scenes through the lens.</p>
+        </div>
+        <div class="hobby-item">
+            <i class="fas fa-gamepad"></i>
+            <h3>Gaming</h3>
+            <p class="preview-text">Exploring new worlds and adventures through games.</p>
+        </div>
+    </div>
+</div>
+
+<!-- Footer Box -->
+<div id="box" style="background: linear-gradient(135deg, #182848, #4f9deb);">
+    <p style="text-align: center; margin: 20px; color: white;">© 2024 Stefan Stojanovski | All Rights Reserved</p>
+</div>
+<script>
+    function toggleMenu() {
+        const hamburger = document.querySelector('.hamburger');
+        const navLinks = document.querySelector('.nav-links');
+        hamburger.classList.toggle('active');
+        navLinks.classList.toggle('active');
+    }
+    window.addEventListener('DOMContentLoaded', () => {
+        const nav = document.querySelector('nav');
+        const hobbies = document.querySelector('.hobbies');
+        setTimeout(() => {
+            nav.classList.add('visible');
+            hobbies.classList.add('visible');
+        }, 2300); // Adjust the time as needed
+    });
+</script>
+
+</body>
+</html>

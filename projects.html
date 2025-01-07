@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Projects</title>
+  <script type="module" src="https://unpkg.com/@splinetool/viewer@1.9.53/build/spline-viewer.js"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+ <style>
+   /* Position the Spline viewer to fill the entire screen */
+   spline-viewer {
+     width: 100vw;
+     height: 100vh;
+     position: absolute;
+     top: 0;
+     left: 0;
+     z-index: 0;
+   }
+
+   /* Navigation and other styles */
+   nav, .projects {
+     opacity: 0;
+     transition: opacity 0.5s ease-in-out;
+   }
+
+   nav.visible, .projects.visible {
+     opacity: 1;
+   }
+
+   /* Projects Section Styling */
+   .projects {
+     position: absolute;
+     top: 30px;
+     left: 50px;
+     color: #182848;
+     font-family: Arial, sans-serif;
+     z-index: 2;
+     text-align: left;
+     width: 500px;
+     padding-right: 30px;
+   }
+
+   .projects h2 {
+     font-size: 32px;
+     margin-bottom: 20px;
+     text-transform: uppercase;
+     letter-spacing: 2px;
+   }
+
+   .projects p {
+     font-size: 18px;
+     margin-bottom: 10px;
+   }
+
+   /* Create a container for projects */
+   .projects-list {
+     display: flex;
+     flex-direction: column; /* Align projects vertically */
+     gap: 30px;
+   }
+
+   /* Project Item Styling */
+   .project-item {
+     background-color: #e3e3e3;
+     padding: 20px;
+     width: 230px;
+     border-radius: 5px;
+     text-align: center;
+     transition: background-color 0.3s ease, transform 0.3s ease;
+     position: relative;
+   }
+
+   .project-item:hover {
+     background-color: #4f9deb;
+     transform: scale(1.05);
+   }
+
+   .project-item img {
+     width: 100%;
+     height: auto;
+     border-radius: 5px;
+     margin-bottom: 15px;
+   }
+
+   .project-item h3 {
+     font-size: 18px;
+     font-weight: bold;
+   }
+
+   /* Project description text */
+   .project-item p {
+     font-size: 14px;
+   }
+
+   /* Container for video preview */
+   .video-preview-container {
+     display: none;
+     position: absolute;
+     top: -50px;
+     left: 100%; /* Position video to the right of the project */
+     width: 200px;
+     height: 400px;
+     background-color: lightgray;
+     color: white;
+     padding: 20px;
+     border-radius: 8px;
+     text-align: center;
+   }
+
+   /* Video preview styles */
+   .video-preview-container video {
+     width: 100%;
+     height: 100%;
+     object-fit: cover;
+     border-radius: 8px;
+   }
+
+   /* Show video preview on hover */
+   .project-item:hover .video-preview-container {
+     display: block;
+   }
+
+   nav {
+     width: 100%;
+     background-color: rgba(227, 227, 227, 0.8);
+     position: absolute;
+     top: 20px;
+     left: 0;
+     z-index: 2;
+     display: flex;
+     justify-content: end;
+   }
+
+   nav a {
+     color: #182848;
+     margin: 0 15px;
+     padding: 10px;
+     text-decoration: none;
+     font-weight: bold;
+     font-size: 16px;
+     text-transform: uppercase;
+     letter-spacing: 2px;
+     transition: background 0.2s ease, color 0.2s ease;
+   }
+
+   nav a:hover {
+     border-radius: 5px;
+     color: #4f9deb;
+     font-weight: bold;
+   }
+
+   /* Cover Box */
+   #box {
+     width: 100vw;
+     height: 60px;
+     background-color: #e3e3e3;
+     position: absolute;
+     bottom: 0;
+     left: 0;
+     z-index: 2;
+   }
+   /* Mobile View */
+   @media (max-width: 768px) {
+
+     .projects {
+       width: 80%;
+       padding: 0;
+       right: 50px;
+       text-align: center;
+       z-index: 1;
+     }
+
+     .projects h2 {
+       margin-left: auto;
+       font-size: 18px;
+     }
+
+     .projects p {
+       display: none;
+     }
+
+     .project-item {
+       width: 50%;
+       margin: -5px -10px;
+       border-radius: 5px;
+       text-align: center;
+       z-index: 1;
+     }
+     .video-preview-container {
+       left: 50%; /* Centered for mobile view */
+       transform: translateX(-50%);
+       width: 90%; /* Adjusted to fit smaller screens */
+       height: auto;
+       max-height: 300px;
+     }
+
+     .hamburger {
+       position: absolute;
+       top: 10px;
+       right: 30px; /* Pomeri hamburger meni desno */
+       display: flex;
+       flex-direction: column;
+       justify-content: space-between;
+       width: 30px;
+       height: 25px;
+       cursor: pointer;
+       z-index: 15;
+     }
+     .hamburger div {
+       background-color: #182848;
+       height: 4px;
+       width: 100%;
+       border-radius: 5px;
+       transition: all 0.3s ease-in-out;
+     }
+
+     nav {
+       position: fixed;
+       top: 0;
+       left: 0;
+       right: 0; /* Postavi meni da pokrije celu širinu */
+       z-index: 10;
+       padding: 10px;
+       background-color: transparent; /* Bez pozadine */
+       flex-direction: column;
+       justify-content: flex-start;
+       align-items: flex-start;
+       height: 100%;
+       display: none;
+       transition: transform 0.5s ease, opacity 0.5s ease;
+       transform: translateX(-100%); /* Skriveno sa leve strane */
+     }
+
+     nav.visible {
+       display: flex;
+       transform: translateX(0);
+       opacity: 1;
+     }
+
+     .nav-links {
+       display: none;
+       flex-direction: column;
+       width: 70%;
+       margin-top: 50px;
+       z-index: 10;
+     }
+
+     .nav-links.active {
+       display: flex;
+     }
+
+     .nav-links a {
+       padding: 10px;
+       font-size: 18px;
+       text-align: left;
+       width: 100%;
+       color: #182848;
+       background-color: #e3e3e3;
+       text-decoration: none;
+       border-top: 1px solid #182848;
+       transition: background-color 0.3s ease, color 0.3s ease;
+     }
+
+     .hobbies-section {
+       width: 90%;
+       left: 5%;
+       top: 100px; /* Adjusts the section placement */
+       text-align: center;
+     }
+
+
+
+     .hobbies-section p {
+       font-size: 12px;
+     }
+
+     /* Footer Box */
+     #footer-box {
+       width: 100%;
+       height: 60px;
+       text-align: center;
+       padding-top: 10px;
+     }
+
+
+   }
+ </style>
+</head>
+<body>
+
+<spline-viewer url="https://prod.spline.design/gG3ZQW6OD3eovUKr/scene.splinecode"></spline-viewer>
+
+<nav>
+  <div class="hamburger" onclick="toggleMenu()">
+    <div></div>
+    <div></div>
+    <div></div>
+  </div>
+  <div class="nav-links">
+  <a href="index.html">Home</a>
+  <a href="skills.html">Skills</a>
+  <a href="hobbies.html">Hobbies</a>
+  <a href="projects.html">Projects</a>
+  <a href="conctact.html">Contact</a>
+  </div>
+</nav>
+
+<!-- Projects Section -->
+<div class="projects">
+  <h2>My Projects</h2>
+  <p>Explore some of the projects I have worked on:</p>
+  <div class="projects-list">
+    <!-- Project 1: RockyDelivery Game -->
+    <div class="project-item">
+      <h3>RockyDelivery Game</h3>
+      <p>A python game made with pygame.</p>
+      <a href="https://github.com/Stefan742/Rocky-Delivery-Game" target="_blank">See Project</a>
+      <!-- Video Preview for RockyDelivery Game -->
+      <div class="video-preview-container">
+        <video autoplay loop muted>
+          <source src="../rockyDelivery.mp4" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
+      </div>
+    </div>
+    <!-- Project 2 -->
+    <div class="project-item">
+      <h3>Web Portfolio</h3>
+      <p>My web portfolio</p>
+    </div>
+  </div>
+</div>
+
+<!-- Cover Box -->
+<div id="box" style="background: linear-gradient(135deg, #182848, #4f9deb);">
+  <p style="text-align: center; margin: 20px; color: white;">© 2024 Stefan Stojanovski | All Rights Reserved</p>
+</div>
+<script>
+
+  function toggleMenu() {
+    const hamburger = document.querySelector('.hamburger');
+    const navLinks = document.querySelector('.nav-links');
+    hamburger.classList.toggle('active');
+    navLinks.classList.toggle('active');
+  }
+  // Delay showing the elements after the Spline animation finishes
+  window.addEventListener('DOMContentLoaded', () => {
+    const nav = document.querySelector('nav');
+    const projects = document.querySelector('.projects');
+
+    setTimeout(() => {
+      nav.classList.add('visible');
+      projects.classList.add('visible');
+    }, 2300); // Adjust the time as needed
+  });
+  document.addEventListener('DOMContentLoaded', () => {
+    const projectItems = document.querySelectorAll('.project-item');
+    const closePreview = (target) => {
+      const openPreview = document.querySelector('.video-preview-container.active');
+      if (openPreview && !target.closest('.project-item')) {
+        openPreview.classList.remove('active');
+      }
+    };
+
+    projectItems.forEach((item) => {
+      const videoPreview = item.querySelector('.video-preview-container');
+
+      item.addEventListener('click', (e) => {
+        e.stopPropagation(); // Prevent closing when interacting with the item
+        closePreview(); // Close any other open previews
+        videoPreview.classList.toggle('active'); // Toggle the current preview
+      });
+    });
+
+    // Close video preview when clicking anywhere outside
+    document.addEventListener('click', (e) => {
+      closePreview(e.target);
+    });
+  });
+
+</script>
+
+
+</body>
+</html>

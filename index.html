@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Stefan Stojanovski Portfolio</title>
+  <script type="module" src="https://unpkg.com/@splinetool/viewer@1.9.53/build/spline-viewer.js"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+ <style>
+   /* Position the Spline viewer to fill the entire screen */
+   spline-viewer {
+     width: 100vw;
+     height: 100vh;
+     position: absolute;
+     top: 0;
+     left: 0;
+     z-index: 0; /* Ensure the Spline viewer stays behind everything */
+   }
+
+   /* Initially hide elements until the animation finishes */
+   nav, .middle-left {
+     opacity: 0;
+     transition: opacity 0.5s ease-in-out;
+   }
+
+   nav.visible, .middle-left.visible {
+     opacity: 1;
+   }
+
+   /* Style the navigation bar */
+   nav {
+     width: 100%;
+     background-color: rgba(227, 227, 227, 0.8);
+     position: absolute;
+     top: 20px;
+     left: 0;
+     z-index: 2;
+     display: flex;
+     justify-content: end;
+   }
+
+   nav a {
+     color: #182848;
+     margin: 0 15px;
+     padding: 10px;
+     text-decoration: none;
+     font-weight: bold;
+     font-size: 16px;
+     text-transform: uppercase;
+     letter-spacing: 2px;
+     transition: background 0.2s ease, color 0.2s ease;
+   }
+
+   nav a:hover {
+     border-radius: 5px;
+     color: #4f9deb; /* Accent color for better visibility */
+     font-weight: bold; /* Make the text bold */
+   }
+
+   /* Style for text on the middle left */
+   .middle-left {
+     position: absolute;
+     top: 50%; /* Center vertically */
+     left: 50px; /* Position near the left side */
+     transform: translateY(-50%); /* Adjust for true vertical centering */
+     color: #182848;
+     font-family: Arial, sans-serif;
+     z-index: 2; /* Ensure it appears above the viewer */
+   }
+
+   .middle-left h1 {
+     font-size: 36px;
+     margin: 0;
+     text-transform: uppercase;
+     letter-spacing: 2px;
+   }
+
+   .middle-left p {
+     font-size: 18px;
+     margin: 5px 0 0;
+     text-transform: none;
+     letter-spacing: 1px;
+   }
+
+   /* Social media icons */
+   .social-icons {
+     display: flex;
+     margin-top: 10px;
+   }
+
+   .social-icons a {
+     margin-right: 15px;
+     color: #182848;
+     font-size: 24px;
+     text-decoration: none;
+     transition: color 0.2s ease, transform 0.2s ease;
+   }
+
+   .social-icons a:hover {
+     color: #4f9deb;
+     transform: scale(1.1); /* Slight zoom effect */
+   }
+
+   /* Style the div */
+   #box {
+     width: 100vw;
+     height: 60px;
+     background-color: #e3e3e3;
+     position: absolute;
+     bottom: 0;
+     left: 0;
+     z-index: 2;
+   }
+
+   /* Mobile menu styles */
+   .hamburger {
+     display: none;
+     flex-direction: column;
+     cursor: pointer;
+     padding: 10px;
+   }
+
+   .hamburger div {
+     width: 30px;
+     height: 3px;
+     background-color: #182848;
+     margin: 6px 0;
+     transition: 0.3s;
+   }
+
+   .nav-links {
+     display: flex;
+     justify-content: flex-end;
+     width: 100%;
+   }
+
+   .nav-links a {
+     display: block;
+   }
+
+   /* Responsive styles */
+   @media (max-width: 768px) {
+     nav {
+       position: fixed;
+       top: 0;
+       left: 0;
+       right: 0;
+       z-index: 2;
+       padding: 10px;
+       background-color: rgba(227, 227, 227, 0.9);
+       flex-direction: column;
+       justify-content: flex-start;
+       align-items: flex-start;
+       height: 100%;
+       display: none; /* Hide nav initially */
+       transition: transform 0.5s ease, opacity 0.5s ease;
+       transform: translateX(-100%); /* Hidden by default */
+     }
+
+     nav.visible {
+       display: flex; /* Show nav when visible class is added */
+     }
+     nav.visible {
+       transform: translateX(0); /* Slide in */
+       opacity: 1; /* Make visible */
+     }
+     .hamburger {
+       display: flex;
+       position: absolute;
+       top: 20px;
+       right: 20px;
+     }
+
+     .nav-links {
+       display: none;
+       flex-direction: column;
+       width: 100%;
+       margin-top: 50px;
+     }
+     .hamburger.active div:nth-child(1) {
+       transform: rotate(45deg) translateY(8px);
+     }
+
+     .hamburger.active div:nth-child(2) {
+       opacity: 0; /* Hide the middle line */
+     }
+
+     .hamburger.active div:nth-child(3) {
+       transform: rotate(-45deg) translateY(-8px);
+     }
+
+     .nav-links a {
+       padding: 10px;
+       font-size: 18px;
+       text-align: left;
+       width: 100%;
+       border-top: 1px solid #182848;
+       transition: background-color 0.3s ease, color 0.3s ease;
+
+     }
+
+     .hamburger.active + .nav-links {
+       display: flex; /* Show links when hamburger is clicked */
+     }
+   }
+ </style>
+</head>
+<body>
+<spline-viewer url="https://prod.spline.design/Vr44FAppFa01WB6j/scene.splinecode"></spline-viewer>
+
+<nav>
+  <div class="hamburger" onclick="toggleMenu()">
+    <div></div>
+    <div></div>
+    <div></div>
+  </div>
+  <div class="nav-links">
+    <a href="skills.html">Skills</a>
+    <a href="hobbies.html">Hobbies</a>
+    <a href="projects.html">Projects</a>
+    <a href="conctact.html">Contact</a>
+  </div>
+</nav>
+
+<div class="middle-left">
+  <h1>Stefan</h1>
+  <h1>Stojanovski</h1>
+  <p>Web Developer | Programmer</p>
+  <div class="social-icons">
+    <a href="https://www.facebook.com/stefan.stojanovski.984/" target="_blank" title="Facebook"><i class="fab fa-facebook-f"></i></a>
+    <a href="https://instagram.com/s.stojanovski" target="_blank" title="Instagram"><i class="fab fa-instagram"></i></a>
+    <a href="https://github.com/Stefan742" target="_blank" title="GitHub"><i class="fab fa-github"></i></a>
+  </div>
+</div>
+
+<!-- Cover Box -->
+<div id="box" style="background: linear-gradient(135deg, #182848, #4f9deb);">
+  <p style="text-align: center; margin: 20px; color: white;">© 2024 Stefan Stojanovski | All Rights Reserved</p>
+</div>
+
+<script>// Toggle menu visibility when hamburger is clicked
+function toggleMenu() {
+  const hamburger = document.querySelector('.hamburger');
+  const navLinks = document.querySelector('.nav-links');
+  hamburger.classList.toggle('active');
+  navLinks.classList.toggle('active');
+}
+
+// Delay showing the elements after the Spline animation finishes
+window.addEventListener('DOMContentLoaded', () => {
+  const nav = document.querySelector('nav');
+  const middleLeft = document.querySelector('.middle-left');
+
+  // Add a delay of 500ms (half a second)
+  setTimeout(() => {
+    nav.classList.add('visible');
+    middleLeft.classList.add('visible');
+  }, 2300); // Adjust the time as needed
+});</script>
+</body>
+</html>

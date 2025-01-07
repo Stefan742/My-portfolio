@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Stefan Stojanovski - Contact</title>
+  <script type="module" src="https://unpkg.com/@splinetool/viewer@1.9.53/build/spline-viewer.js"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+ <style>
+   /* Same CSS as before, with slight modifications for the Contact page */
+   spline-viewer {
+     width: 100vw;
+     height: 100vh;
+     position: absolute;
+     top: 0;
+     left: 0;
+     z-index: 0;
+   }
+
+   nav, .contact {
+     opacity: 0;
+     transition: opacity 0.5s ease-in-out;
+   }
+
+   nav.visible, .contact.visible {
+     opacity: 1;
+   }
+   .contact {
+     position: absolute;
+     top: 30px;
+     left: 50px;
+     z-index: 2;
+     color: #182848;
+     text-align: left;
+     width: 500px;
+     padding-right: 30px;
+     opacity: 0;
+     transition: opacity 0.5s ease-in-out;
+   }
+
+   .contact.visible {
+     opacity: 1;
+   }
+
+   .contact h2 {
+     font-size: 32px;
+     margin-bottom: 20px;
+     text-transform: uppercase;
+     letter-spacing: 2px;
+   }
+
+   .contact p {
+     font-size: 18px;
+     margin-bottom: 10px;
+   }
+
+   .contact-info {
+     display: flex;
+     flex-wrap: wrap; /* Allows wrapping if needed */
+     gap: 20px; /* Reduced the gap between items */
+   }
+
+   .contact-item {
+     background: linear-gradient(145deg, #e3e3e3, #f1f1f1);
+     padding: 20px;
+     width: 180px; /* Reduced the width of contact items */
+     height: 160px; /* Adjusted height to maintain proportion */
+     border-radius: 10px;
+     transition: transform 0.3s ease, box-shadow 0.3s ease;
+     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+     text-align: center;
+     position: relative;
+   }
+
+   .contact-item:hover {
+     transform: scale(1.05);
+   }
+
+   .contact-item i {
+     font-size: 40px;
+     margin-bottom: 15px;
+     color: #182848;
+   }
+
+   .preview-text {
+     position: absolute;
+     bottom: -25px;
+     left: 0;
+     width: 100%;
+     font-size: 14px;
+     color: #555;
+     transition: opacity 0.3s ease, bottom 0.3s ease;
+     opacity: 0;
+     text-align: center;
+     margin-top: 10px;
+   }
+
+   .contact-item:hover .preview-text {
+     opacity: 1;
+     bottom: 5px;
+     background-color: #4f9deb;
+     color: white;
+   }
+
+
+   /* Cover Box */
+   #box {
+     width: 100vw;
+     height: 60px;
+     background: linear-gradient(135deg, #182848, #4f9deb);
+     position: absolute;
+     bottom: 0;
+     left: 0;
+     z-index: 2;
+   }
+
+   #box p {
+     text-align: center;
+     margin: 20px;
+     color: white;
+     font-size: 16px;
+     font-weight: bold;
+   }
+
+   nav {
+     width: 100%;
+     background-color: rgba(227, 227, 227, 0.8);
+     position: absolute;
+     top: 20px;
+     left: 0;
+     z-index: 2;
+     display: flex;
+     justify-content: end;
+   }
+
+   nav a {
+     color: #182848;
+     margin: 0 15px;
+     padding: 10px;
+     text-decoration: none;
+     font-weight: bold;
+     font-size: 16px;
+     text-transform: uppercase;
+     letter-spacing: 2px;
+     transition: background 0.2s ease, color 0.2s ease;
+   }
+   .mobile-contact{
+     display: none;
+   }
+   nav a:hover {
+     border-radius: 5px;
+     color: #4f9deb;
+     font-weight: bold;
+   }
+   @media (max-width: 768px) {
+     .contact{
+       width: 80%;
+       padding: 0;
+       right: 50px;
+       text-align: center;
+       z-index: 1;
+     }
+     #desc{
+       display: none;
+     }
+     .contact-info {
+       display: none; /* Hide contact info in mobile view */
+     }
+
+     .contact-item {
+       display: none; /* Hide individual contact items in mobile view */
+     }
+
+     .mobile-contact {
+       display: block; /* Show mobile contact info */
+       opacity: 1;
+       background-color: #f1f1f1; /* Light background */
+       padding: 20px;
+       border-radius: 10px;
+       box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+       margin: 20px -40px;
+       width: 100%;
+     }
+
+     .mobile-contact h4 {
+       font-size: 20px;
+       color: #182848;
+       margin-bottom: 10px;
+     }
+
+     .mobile-contact p {
+       font-size: 16px;
+       color: #182848;
+       margin-bottom: 8px;
+     }
+     .hamburger {
+       position: absolute;
+       top: 10px;
+       right: 30px; /* Pomeri hamburger meni desno */
+       display: flex;
+       flex-direction: column;
+       justify-content: space-between;
+       width: 30px;
+       height: 25px;
+       cursor: pointer;
+       z-index: 15;
+     }
+     .hamburger div {
+       background-color: #182848;
+       height: 4px;
+       width: 100%;
+       border-radius: 5px;
+       transition: all 0.3s ease-in-out;
+     }
+
+     nav {
+       position: fixed;
+       top: 0;
+       left: 0;
+       right: 0; /* Postavi meni da pokrije celu širinu */
+       z-index: 10;
+       padding: 10px;
+       background-color: transparent; /* Bez pozadine */
+       flex-direction: column;
+       justify-content: flex-start;
+       align-items: flex-start;
+       height: 100%;
+       display: none;
+       transition: transform 0.5s ease, opacity 0.5s ease;
+       transform: translateX(-100%); /* Skriveno sa leve strane */
+     }
+
+     nav.visible {
+       display: flex;
+       transform: translateX(0);
+       opacity: 1;
+     }
+
+     .nav-links {
+       display: none;
+       flex-direction: column;
+       width: 70%;
+       margin-top: 50px;
+       z-index: 10;
+     }
+
+     .nav-links.active {
+       display: flex;
+     }
+
+     .nav-links a {
+       padding: 10px;
+       font-size: 18px;
+       text-align: left;
+       width: 100%;
+       color: #182848;
+       background-color: #e3e3e3;
+       text-decoration: none;
+       border-top: 1px solid #182848;
+       transition: background-color 0.3s ease, color 0.3s ease;
+     }
+
+     .hobbies-section {
+       width: 90%;
+       left: 5%;
+       top: 100px; /* Adjusts the section placement */
+       text-align: center;
+     }
+
+
+
+     .hobbies-section p {
+       font-size: 12px;
+     }
+
+     /* Footer Box */
+     #footer-box {
+       width: 100%;
+       height: 60px;
+       text-align: center;
+       padding-top: 10px;
+     }
+
+
+   }
+ </style>
+
+</head>
+<body>
+
+<spline-viewer url="https://prod.spline.design/gG3ZQW6OD3eovUKr/scene.splinecode"></spline-viewer>
+
+<nav>
+  <div class="hamburger" onclick="toggleMenu()">
+    <div></div>
+    <div></div>
+    <div></div>
+  </div>
+  <div class="nav-links">
+  <a href="index.html">Home</a>
+  <a href="skills.html">Skills</a>
+  <a href="hobbies.html">Hobbies</a>
+  <a href="projects.html">Projects</a>
+  <a href="conctact.html">Contact</a>
+  </div>
+</nav>
+
+<!-- Contact Section -->
+<div class="contact">
+  <h2>Contact Me</h2>
+  <div class="mobile-contact">
+    <h4>Email:</h4> <p>stefanstojanovski21@gmail.com</p>
+    <h4>Phone:</h4> <p>075 206 264</p>
+    <h4>Location:</h4> <p>Veles, Macedonia</p>
+  </div>
+  <p id="desc">If you would like to reach out to me, here are a few ways:</p>
+  <div class="contact-info">
+    <div class="contact-item">
+      <i class="fas fa-envelope"></i>
+      <h3>Email</h3>
+      <p class="preview-text">stefanstojanovski21@gmail.com</p>
+    </div>
+    <div class="contact-item">
+      <i class="fas fa-phone-alt"></i>
+      <h3>Phone</h3>
+      <p class="preview-text">+389 75 206 264</p>
+    </div>
+    <div class="contact-item">
+      <i class="fas fa-map-marker-alt"></i>
+      <h3>Location</h3>
+      <p class="preview-text">Veles, North Macedonia</p>
+    </div>
+  </div>
+</div>
+
+
+<!-- Cover Box -->
+<div id="box" style="background: linear-gradient(135deg, #182848, #4f9deb);">
+  <p>© 2024 Stefan Stojanovski | All Rights Reserved</p>
+</div>
+<script>
+  function toggleMenu() {
+    const hamburger = document.querySelector('.hamburger');
+    const navLinks = document.querySelector('.nav-links');
+
+    hamburger.classList.toggle('active');
+    navLinks.classList.toggle('active');
+  }
+
+  // Delay showing the elements after the Spline animation finishes
+  window.addEventListener('DOMContentLoaded', () => {
+    const nav = document.querySelector('nav');
+    const contact = document.querySelector('.contact');
+    const mobileContact = document.querySelector('.mobile-contact'); // Select mobile contact section
+
+    // Wait for the page to load and Spline animation to finish before revealing elements
+    setTimeout(() => {
+      nav.classList.add('visible');
+      contact.classList.add('visible');
+
+      // Display mobile contact only on smaller screens (below 768px)
+      if (window.innerWidth <= 768) {
+        mobileContact.style.display = 'block'; // Ensure mobile contact is shown
+      } else {
+        mobileContact.style.display = 'none'; // Hide it for larger screens
+      }
+    }, 2300); // Adjust the time as needed
+  });
+
+  // Ensure the mobile contact section behaves correctly when resizing the screen
+  window.addEventListener('resize', () => {
+    const mobileContact = document.querySelector('.mobile-contact');
+
+    if (window.innerWidth <= 768) {
+      mobileContact.style.display = 'block'; // Show on small screens
+    } else {
+      mobileContact.style.display = 'none'; // Hide on larger screens
+    }
+  });
+</script>
+</body>
+</html>
